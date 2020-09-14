@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title> QuantPanda </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script>
+$(document).ready(function(){
+    
+    $("#faber").hide();
+	$("#adaptive").hide();
+	$("#vigilant").hide();
+	$("#EA_allocation").hide();
+	$("#AC_allocation").hide();
+	$("#DM_allocation").hide();
+	$("#PS_allocation").hide();
+	
+    $("#stlist").on('change',function(){
+    if (this.value == 'Momentum')
+    {
+       $("#faber").show();
+	   $("#adaptive").hide();
+	   $("#vigilant").hide();
+	   $("#EA_allocation").hide();
+	   $("#AC_allocation").hide();
+	   $("#DM_allocation").hide();
+	   $("#PS_allocation").hide();
+    }
+	else if(this.value == 'Valuation')
+	{
+	   $("#adaptive").show();
+	   $("#faber").hide();
+	   $("#vigilant").hide();
+	   $("#EA_allocation").hide();
+	   $("#AC_allocation").hide();
+	   $("#DM_allocation").hide();
+	   $("#PS_allocation").hide();
+	}
+	else if(this.value == 'Carry')
+	{
+	  $("#vigilant").show();
+	  $("#faber").hide();
+	  $("#adaptive").hide();
+	  $("#EA_allocation").hide();
+	  $("#AC_allocation").hide();
+	  $("#DM_allocation").hide();
+	  $("#PS_allocation").hide();
+	}
+	else if(this.value == 'CGF')
+	{
+	  $("#EA_allocation").show();
+	  $("#faber").hide();
+	  $("#adaptive").hide();
+	  $("#vigilant").hide();
+	  $("#AC_allocation").hide();
+	  $("#DM_allocation").hide();
+	  $("#PS_allocation").hide();
+	}
+	else if(this.value == 'Is')
+	{
+	  $("#AC_allocation").show();
+	  $("#faber").hide();
+	  $("#adaptive").hide();
+	  $("#vigilant").hide();
+	  $("#EA_allocation").hide();
+	  $("#DM_allocation").hide();
+	  $("#PS_allocation").hide();
+	}
+	else if(this.value == 'Ds')
+	{
+	  $("#DM_allocation").show();
+	  $("#faber").hide();
+	  $("#adaptive").hide();
+	  $("#vigilant").hide();
+	  $("#EA_allocation").hide();
+	  $("#AC_allocation").hide();
+	  $("#PS_allocation").hide();
+	}
+	else if(this.value == 'Gmr')
+	{
+	  $("#PS_allocation").show();
+	  $("#faber").hide();
+	  $("#adaptive").hide();
+	  $("#vigilant").hide();
+	  $("#EA_allocation").hide();
+	  $("#AC_allocation").hide();
+	  $("#DM_allocation").hide();
+	}
+	else
+	{
+	  $("#faber").hide();
+	  $("#adaptive").hide();
+	  $("#vigilant").hide();
+	  $("#EA_allocation").hide();
+	  $("#AC_allocation").hide();
+	  $("#DM_allocation").hide();
+	  $("#PS_allocation").hide(); 
+	}
+   });
+});
+</script>
+</head>
+
+<body>
+ 
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="#">Documentation</a></li>
+        <li class="active"><a href="#">Backtest</a></li>
+        <li><a href="#">Resources</a></li>
+      </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <form method="post" action="/BacktestAnalysis">
+    <div class="form-group row">
+      <div class="col-xs-3">
+        <label for="ex2">Strategy List</label>
+        <select class="form-control" id="stlist" style="width:260px">
+		     <option value="0">--Select an option--</option>
+             <option value="Momentum">Faber's Asset Allocation</option>
+			 <option value="Valuation">Adaptive Asset Allocation</option>
+			 <option value="Carry">Vigilant Asset Allocation</option>
+			 <option value="CGF">Elastic Asset Allocation Tactical Allocation</option>
+			 <option value="Is">Active Combined Asset Allocation</option>
+			 <option value="Ds">Dual Momentum Asset Allocation</option>
+			 <option value="Gmr">Paired Switching Asset Allocation</option>
+        </select>
+      </div>
+	  <div class="col-xs-3">
+        <label for="sel1">Rebalance Period</label>
+        <select class="form-control" id="pList" style="width:150px">
+             <option value='B'>Daily</option>
+             <option value='W-FRI'>Weekly</option>
+             <option value='BM'>Monthly</option>
+             <option value='BQ'>None</option>			 
+        </select>
+      </div>
+	  
+	  <div class="col-xs-3">
+        <label for="sel1">Portfolio Rebalancing</label>
+        <select class="form-control" id="sel1" style="width:170px">
+             <option>testdata</option>
+             <option></option>
+        </select>
+      </div>
+      
+	  <div class="col-xs-3">
+        <label for="sel1">Date Range</label>
+	    <input class="form-control" type="date" id="start" name="start"
+          min="1940/02/27" value="2005-01-01">
+         <input class="form-control" type="date" id="start" name="end"
+          min="2005-01-01" value="2019-05-01"> 
+      </div>
+    </div>
+	<br> <br>
+	
+	<div class="form-group row">
+	 <div id="faber" class="col-xs-3">
+	     <label for="number">First leg N month returns</label> <br>
+         <input  class="form-control" style="width:150px" type="number" name="fa1" value=1>  <br>
+
+         <label for="number">Second leg N month returns</label> <br>
+         <input  class="form-control" style="width:150px" type="number" name="fa2" value=3>  <br>
+
+         <label for="number">Third leg N month returns</label> <br>
+         <input  class="form-control" style="width:150px" type="number" name="fa3" value=6>  <br>
+
+         <label for="number">Fourth leg N month returns</label> <br>
+         <input  class="form-control" style="width:150px" type="number" name="fa4" value=12>  <br>
+
+         <label for="number">Leverage</label> <br>
+         <input  class="form-control" style="width:150px" type="number" name="la" value=1>  <br>
+    </div>
+	
+	<div id="adaptive" class="col-xs-3">
+        <label for="number"> N month returns for  the assets</label> <br>
+        <input class="form-control" style="width:150px" type="number" name="aa1" value=6>  <br>
+
+        <label for="number">Number of assets to hold</label> <br>
+        <input class="form-control" style="width:150px" type="number" name="aa2" value=5>  <br>
+    </div>
+	
+	<div id="vigilant" class="col-xs-3">
+         <label for="number">Number of assets to hold</label> <br>
+         <input class="form-control" style="width:150px" type="number" name="va" value=1>  <br>        
+    </div>
+	
+	<div id="EA_allocation" class="col-xs-3" name="cgf">
+         <label for="number">Number of assets to hold</label> <br>
+         <input class="form-control" style="width:150px" type="number" name="ma" value=1>  <br>
+    </div>
+	
+	<div id="AC_allocation" class="col-xs-3" name="is1">
+         <label for="number">Lower channel (Months)</label> <br>
+         <input class="form-control" style="width:150px" type="number" name="ma" value=6>  <br>
+        
+         <label for="number">Upper channel (Months)</label> <br>
+         <input class="form-control" style="width:150px" type="number" name="ma" value=12>  <br>     
+    </div>
+
+    <div id="DM_allocation" class="col-xs-3" name="ds1"> 
+         <label for="number">N month returns</label> <br>
+         <input class="form-control" style="width:150px" type="number" name="ma" value=12>  <br>
+    </div>
+
+    <div id="PS_allocation" class="col-xs-3" name="gmr">
+         <label for="number">N month returns</labe l> <br>
+         <input class="form-control" style="width:150px" type="number" name="ma" value=3>  <br>
+    </div>
+	
+    </div>
+	<br>
+	
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+  </form>
+</div>
+
+
+  
+</body>
+</html>
